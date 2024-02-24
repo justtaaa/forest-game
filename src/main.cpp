@@ -1,39 +1,35 @@
 #include <SFML/Graphics.hpp>
+#include <iostream>
+#include "MainMenu.h"
 
 int main() {
-    // Create the main game window
     sf::RenderWindow window(sf::VideoMode(800, 600), "My Game");
     window.setFramerateLimit(60);
 
-    // Use SFML's default font
     sf::Font font;
-    if (!font.loadFromFile("/Users/taisiianekrasova/CLionProjects/forest-game/resources/fonts/SourceCodePro-BlackItalic.ttf")) {
-        // Handle error - exit or use a fallback
-        return EXIT_FAILURE;
+    if (!font.loadFromFile("/Users/taisiianekrasova/CLionProjects/forest-game/resources/fonts/SourceCodePro-Bold.ttf")) {
+        std::cerr << "Failed to load font" << std::endl;
+        return -1;
     }
 
-    // Create a text object with the default font
-    sf::Text text("Hello, SFML!", font, 30); // 30 is the character size
-    text.setFillColor(sf::Color::White);
-    text.setPosition(100, 100); // Position the text at x=100, y=100
 
-    // Main loop that continues until we close the window
+    MainMenu mainMenu(font, window.getSize());
+
+    sf::Clock clock; // Start a clock to track elapsed time
+
     while (window.isOpen()) {
         sf::Event event;
-        // Process events
         while (window.pollEvent(event)) {
-            // Close the window when a close event is received
             if (event.type == sf::Event::Closed)
                 window.close();
         }
 
-        // Clear the window with a black color
-        window.clear(sf::Color::Black);
+        sf::Time deltaTime = clock.restart(); // Restart the clock and save the elapsed time since the last frame
 
-        // Draw the text
-        window.draw(text);
+        mainMenu.update(deltaTime, window); // Update the main menu, passing in the delta time
 
-        // Display what was drawn during this frame
+        window.clear();
+        mainMenu.draw(window); // Draw the main menu (which should now be updated)
         window.display();
     }
 

@@ -1,6 +1,5 @@
 #include "Button.h"
 
-// Constructor implementation
 Button::Button(const std::string& text, const sf::Vector2f& position, const sf::Font& font)
         : action([](){}), // Initialize the action to an empty lambda function
           text(text, font) { // Initialize the sf::Text member with the string and font
@@ -15,18 +14,18 @@ Button::Button(const std::string& text, const sf::Vector2f& position, const sf::
     background.setOutlineThickness(2.0f);
 }
 
-// setAction method implementation
+
 void Button::setAction(const std::function<void()>& action) {
     this->action = action; // Assign the provided action to the member variable
 }
 
-// draw method implementation
+
 void Button::draw(sf::RenderWindow& window) {
     window.draw(background); // Draw the button's background
     window.draw(text); // Draw the button's text
 }
 
-// handleEvent method implementation
+
 void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window) {
     // Check if the event is a mouse button press
     if (event.type == sf::Event::MouseButtonPressed) {
@@ -35,5 +34,21 @@ void Button::handleEvent(const sf::Event& event, const sf::RenderWindow& window)
         if (background.getGlobalBounds().contains(mousePos)) {
             action(); // If so, execute the button's action
         }
+    }
+}
+
+bool Button::isHovered(const sf::RenderWindow& window) const {
+    sf::Vector2i mousePos = sf::Mouse::getPosition(window);
+    return background.getGlobalBounds().contains(window.mapPixelToCoords(mousePos));
+}
+
+
+void Button::update(const sf::RenderWindow& window) {
+    if (isHovered(window)) {
+        background.setFillColor(sf::Color::White); // Change color on hover
+        text.setFillColor(sf::Color::Black);
+    } else {
+        background.setFillColor(sf::Color::Transparent);
+        text.setFillColor(sf::Color::White);
     }
 }

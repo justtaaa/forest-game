@@ -1,7 +1,3 @@
-//
-// Created by Taisiia Nekrasova on 24/02/2024.
-//
-
 #ifndef FOREST_GAME_BUTTON_H
 #define FOREST_GAME_BUTTON_H
 
@@ -15,6 +11,8 @@ public:
     void setAction(const std::function<void()>& action);
     void draw(sf::RenderWindow& window);
     void handleEvent(const sf::Event& event, const sf::RenderWindow& window);
+    bool isHovered(const sf::RenderWindow& window) const;
+    void update(const sf::RenderWindow& window);
 
 private:
     sf::RectangleShape background;
@@ -22,4 +20,4 @@ private:
     std::function<void()> action; // The action to take when the button is clicked
 };
 
-#endif // BUTTON_H
+#endif
